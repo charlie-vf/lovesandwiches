@@ -38,6 +38,44 @@ def get_sales_data():
     # use input() method to get sales data from user in terminal
     # will be returned as a string
     data_str = input('Enter your data here: ')
-    print(f'The data provided is {data_str}')
+    
+    # now we've collected the data from the user, we need to check 
+    # it is valid before running the rest of the program to do this 
+    # we need to convert our string value into a list of values, 
+    # each separated by a comma
+
+    # the split(',') removes the commas from the input string
+    # there will still be commas between each 'number' when printed
+    # as it is a list
+    sales_data = data_str.split(',')
+    
+    # calls the validate_data function within get_sales_data
+    validate_data(sales_data)
+
+# the program relies on the data being six numbers
+# this function will validate our data before allowing the rest of the
+# program to continue
+# it is passed the paramater of values, which will be the sales data list
+
+# print(values) prints the same list as when we added print(sales_data)
+# underneath the sales_data variable
+def validate_data(values):
+    """
+    Inside the try, converts all string values into integers.
+    Raises customised ValueError if strings cannot be converted into 
+    lists, or if there aren't exactly 6 values
+    """
+    try:
+        if len(values) != 6:
+            raise ValueError(
+                f"Exactly 6 values required. You provided {len(values)}"
+            )        
+    except ValueError as e:
+        print(f"Invalid data: {e}, please try again\n")
+
+    # ^^ the ValueError class in the except part contains the details of the
+    # error triggered by the code in our try statement
+    # 'as' keyword assigns ValueError object to the 'e' variable, which is
+    # standard Python shorthand for 'error'
 
 get_sales_data()
