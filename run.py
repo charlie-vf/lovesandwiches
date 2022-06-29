@@ -26,8 +26,18 @@ SHEET = GSPREAD_CLIENT.open('love_sandwiches')
 
 # ^^^ Above settings are required to access spreadsheet data
 
-# access data in sales worksheet
-sales = SHEET.worksheet('sales')
+# collect sales data from user
+def get_sales_data():
+    """
+    Get sales figures input from the user
+    """
+    print('Please enter sales data from the last market.')
+    print('Data should be six numbers, separated by commas.')
+    print('Example: 10, 20, 25, 17, 25, 30\n')
 
-data = sales.get_all_values()
-print(data)
+    # use input() method to get sales data from user in terminal
+    # will be returned as a string
+    data_str = input('Enter your data here: ')
+    print(f'The data provided is {data_str}')
+
+get_sales_data()
