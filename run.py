@@ -3,6 +3,8 @@ import gspread
 # import Credentials as no need to import the entire google.auth library
 from google.oauth2.service_account import Credentials
 
+from pprint import pprint
+
 # Lists the APIs that the program should access in order to run
 # SCOPE in capitals as it is a constant
 SCOPE = [
@@ -127,18 +129,60 @@ def update_sales_worksheet(data):
     print("Sales worksheet updated successfully.\n")
 
 
-# FUNCTION CALLS BELOW
+# FUNCTION CALLS BELOW - it is good practice to put all the main function calls
+# into a function called main.
+# REMEMBER - you cannot call a function above where it is defined, so call 'main'
+# below its definition
 
 # get_sales_data() call changed to variable data = get_sales_data() once 
 # while loop & validation completed as function now returns a value 
 # and we need a place to put it. aka, this contains the data from the function
-data = get_sales_data()
+
+# data = get_sales_data()
 
 # list comprehension to convert data from list (['1', ' 2', ' 3', ' 4', ' 5', ' 6'])
 # into integers so the spreadsheet can work with them
-sales_data = [int(num) for num in data]
+
+# sales_data = [int(num) for num in data]
+
 # then create new function which inserts this sales_data into a new entry
 # in the sales worksheet in the Google Sheet - this is the
 # update_sales_worskheet function
 
-update_sales_worksheet(sales_data)
+# update_sales_worksheet(sales_data)
+
+
+# function to calculate surplus data
+# pass it sales data list
+def calculate_surplus_data(sales_row):
+    """
+    Compare sales with stock and calculate surplus for each item.
+
+    The surplus is defined as the sales figure subtractd from the stock:
+    - Positive surplus indicates waste
+    - Negative surplus indicates extra made when stock was sold out.
+    """
+    print("Calculating surplus data...\n")
+
+    # need stock data from before market - line 9 of stock worksheet
+    # use get_all_values method to get all values
+    stock = SHEET.worksheet('stock').get_all_values()
+    # ^^ this gets every row from the stock worksheet
+
+    # standard list index won't work, as every time new data is added to the
+    # stock worksheet, the row number we want will increase
+    # use a slice - square brackets - will slice te final
+    stock_row = stock[-1]
+    print(stock_row)
+
+
+
+def main():
+    data = get_sales_data()
+    sales_data = [int(num) for num in data]
+    update_sales_worksheet(sales_data)
+    calculate_surplus_data(sales_data)
+
+
+print("Welcome to Love Sandwiches data automation.\n")
+main()
