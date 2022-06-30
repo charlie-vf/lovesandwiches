@@ -105,7 +105,9 @@ def validate_data(values):
         return False
 
     # if program runs without errors:
+    
     return True
+    
     # use the return value as the condition for ending the while loop in
     # get_sales_data function.
 
@@ -130,28 +132,14 @@ def update_sales_worksheet(data):
     print("Sales worksheet updated successfully.\n")
 
 
-# FUNCTION CALLS BELOW - it is good practice to put all the main function calls
-# into a function called main.
-# REMEMBER - you cannot call a function above where it is defined, so call 'main'
-# below its definition
-
-# get_sales_data() call changed to variable data = get_sales_data() once 
-# while loop & validation completed as function now returns a value 
-# and we need a place to put it. aka, this contains the data from the function
-
-# data = get_sales_data()
-
-# list comprehension to convert data from list (['1', ' 2', ' 3', ' 4', ' 5', ' 6'])
-# into integers so the spreadsheet can work with them
-
-# sales_data = [int(num) for num in data]
-
-# then create new function which inserts this sales_data into a new entry
-# in the sales worksheet in the Google Sheet - this is the
-# update_sales_worskheet function
-
-# update_sales_worksheet(sales_data)
-
+def update_surplus_worksheet(data):
+    """
+    Update surplus worksheet, add new row with the list data provided
+    """
+    print("Updating surplus worksheet...\n")
+    surplus_worksheet = SHEET.worksheet("surplus")
+    surplus_worksheet.append_row(data)
+    print("Surplus worksheet updated successfully.\n")
 
 # function to calculate surplus data
 # pass it sales data list
@@ -180,20 +168,45 @@ def calculate_surplus_data(sales_row):
     # unpacks the stock_row list & assigns each individual piece to the stock variable
     # unpacks the sales_row list & assigns each individual piece to the sales variable
     # need a list to put these numbers - append surplus calculation to list within function
+    # use int() on stock variable to convert string to integers
     surplus_data = []
     for stock, sales in zip(stock_row, sales_row):
         surplus = int(stock) - sales
         surplus_data.append(surplus)
-    print(surplus_data)
+    
+    # remove print(surplus_data) & replace with return statement
+    # return surplus_data list so function has the value - otherwise surplus worksheet
+    # will not update
+    return surplus_data
 
+# FUNCTION CALLS BELOW - it is good practice to put all the main function calls
+# into a function called main.
+# REMEMBER - you cannot call a function above where it is defined, so call 'main'
+# below its definition
 
+# get_sales_data() call changed to variable data = get_sales_data() once 
+# while loop & validation completed as function now returns a value 
+# and we need a place to put it. aka, this contains the data from the function
 
+# data = get_sales_data()
+
+# list comprehension to convert data from list (['1', ' 2', ' 3', ' 4', ' 5', ' 6'])
+# into integers so the spreadsheet can work with them
+
+# sales_data = [int(num) for num in data]
+
+# then create new function which inserts this sales_data into a new entry
+# in the sales worksheet in the Google Sheet - this is the
+# update_sales_worskheet function
+
+# update_sales_worksheet(sales_data)
 
 def main():
     data = get_sales_data()
     sales_data = [int(num) for num in data]
     update_sales_worksheet(sales_data)
-    calculate_surplus_data(sales_data)
+    new_surplus_data = calculate_surplus_data(sales_data)
+    update_surplus_worksheet(new_surplus_data)
 
 
 print("Welcome to Love Sandwiches data automation.\n")
