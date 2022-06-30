@@ -117,29 +117,45 @@ def validate_data(values):
     # standard Python shorthand for 'error'
 
 # function needs to be passed the data to work
-def update_sales_worksheet(data):
+# def update_sales_worksheet(data):
     """
     Update sales worksheet. Insert new row with the list data provided.
     """
-    print("Updating sales worksheet...\n")
+    # print("Updating sales worksheet...\n")
     # access sales worksheet from Google Sheet by declaring new variable so we
     # can add data to it. Assign it the SHEET variable which was given the
     # data using the gspread library at the top of the page
     # use gspread worksheet() method to access sales worksheet
-    sales_worksheet = SHEET.worksheet('sales')
+    
+    # sales_worksheet = SHEET.worksheet('sales')
+    
     # use gspread append_row method to insert data into worksheet
-    sales_worksheet.append_row(data)
-    print("Sales worksheet updated successfully.\n")
+    
+    # sales_worksheet.append_row(data)
+    # print("Sales worksheet updated successfully.\n")
 
 
-def update_surplus_worksheet(data):
+# def update_surplus_worksheet(data):
     """
     Update surplus worksheet, add new row with the list data provided
     """
-    print("Updating surplus worksheet...\n")
-    surplus_worksheet = SHEET.worksheet("surplus")
-    surplus_worksheet.append_row(data)
-    print("Surplus worksheet updated successfully.\n")
+    # print("Updating surplus worksheet...\n")
+    # surplus_worksheet = SHEET.worksheet("surplus")
+    # surplus_worksheet.append_row(data)
+    # print("Surplus worksheet updated successfully.\n")
+
+# refactoring of separate functions for stock & surplus into one function
+# to minimise repetition
+# worksheet argument will hold the name of the worksheet we want to update
+def update_worksheet(data, worksheet):
+    """
+    Receives a list of integers to be inserted into a worksheet.
+    Updates the relevant worksheet with the data provided.
+    """
+    print(f"Updating {worksheet} worksheet...\n")
+    worksheet_to_update = SHEET.worksheet(worksheet)
+    worksheet_to_update.append_row(data)
+    print(f"{worksheet} worksheet updated successfully.\n")
 
 # function to calculate surplus data
 # pass it sales data list
@@ -200,13 +216,18 @@ def calculate_surplus_data(sales_row):
 # update_sales_worskheet function
 
 # update_sales_worksheet(sales_data)
+# update_surplus_worksheet(surplus_data)
+# these were replaced with update_worksheet *2
+# each call to that function includes two paramaters, as defined in the function
+# the first is for the data collected, the second is for the worksheet it is
+# writing to
 
 def main():
     data = get_sales_data()
     sales_data = [int(num) for num in data]
-    update_sales_worksheet(sales_data)
+    update_worksheet(sales_data, 'sales')
     new_surplus_data = calculate_surplus_data(sales_data)
-    update_surplus_worksheet(new_surplus_data)
+    update_worksheet(new_surplus_data, 'surplus')
 
 
 print("Welcome to Love Sandwiches data automation.\n")
