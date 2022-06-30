@@ -29,7 +29,10 @@ SHEET = GSPREAD_CLIENT.open('love_sandwiches')
 # collect sales data from user
 def get_sales_data():
     """
-    Get sales figures input from the user
+    Get sales figures input from the user.
+    Run a while loop to collect a valid string of data from user
+    via the terminal, which must be a string of 6 numbers separated
+    by commas. The loop will request data until it is valid.
     """
 
     # while loop continues to request data over and over until
@@ -108,8 +111,34 @@ def validate_data(values):
     # 'as' keyword assigns ValueError object to the 'e' variable, which is
     # standard Python shorthand for 'error'
 
+# function needs to be passed the data to work
+def update_sales_worksheet(data):
+    """
+    Update sales worksheet. Insert new row with the list data provided.
+    """
+    print("Updating sales worksheet...\n")
+    # access sales worksheet from Google Sheet by declaring new variable so we
+    # can add data to it. Assign it the SHEET variable which was given the
+    # data using the gspread library at the top of the page
+    # use gspread worksheet() method to access sales worksheet
+    sales_worksheet = SHEET.worksheet('sales')
+    # use gspread append_row method to insert data into worksheet
+    sales_worksheet.append_row(data)
+    print("Sales worksheet updated successfully.\n")
 
-# get_sales_data() call changed to variable data once while loop & validation
-# completed as function now returns a value and we need a place to put it
-# aka, this contains the data from the function
+
+# FUNCTION CALLS BELOW
+
+# get_sales_data() call changed to variable data = get_sales_data() once 
+# while loop & validation completed as function now returns a value 
+# and we need a place to put it. aka, this contains the data from the function
 data = get_sales_data()
+
+# list comprehension to convert data from list (['1', ' 2', ' 3', ' 4', ' 5', ' 6'])
+# into integers so the spreadsheet can work with them
+sales_data = [int(num) for num in data]
+# then create new function which inserts this sales_data into a new entry
+# in the sales worksheet in the Google Sheet - this is the
+# update_sales_worskheet function
+
+update_sales_worksheet(sales_data)
