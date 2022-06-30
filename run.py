@@ -3,8 +3,6 @@ import gspread
 # import Credentials as no need to import the entire google.auth library
 from google.oauth2.service_account import Credentials
 
-from pprint import pprint
-
 # Lists the APIs that the program should access in order to run
 # SCOPE in capitals as it is a constant
 SCOPE = [
@@ -48,7 +46,7 @@ def get_sales_data():
 
         # use input() method to get sales data from user in terminal
         # will be returned as a string
-        data_str = input('Enter your data here: ')
+        data_str = input('Enter your data here: \n')
         
         # now we've collected the data from the user, we need to check 
         # it is valid before running the rest of the program to do this 
