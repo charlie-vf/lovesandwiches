@@ -217,6 +217,31 @@ def get_last_5_entries_sales():
     return columns
 
 
+def calculate_stock_data(data):
+    """ 
+    Calulate average stock for each item type, adding 10%
+    """
+    print('Calculating stock data...\n')
+    
+    new_stock_data = []
+    
+    for column in data:
+        # variable named int_column to differentiate it from the non-integer
+        # column list
+        int_column = [int(num) for num in column]
+        average = sum(int_column) / len(int_column)
+        # company wanted average + 10%
+        # so, create a new variable to add 10% to the average variable
+        stock_num = average * 1.1
+        
+        # round method rounds each number to a whole number, instead of 
+        # floating points
+        new_stock_data.append(round(stock_num))
+    
+    return new_stock_data
+
+
+
 # FUNCTION CALLS BELOW - it is good practice to put all the main function calls
 # into a function called main.
 # REMEMBER - you cannot call a function above where it is defined, so call 'main'
@@ -239,10 +264,13 @@ def get_last_5_entries_sales():
 
 # update_sales_worksheet(sales_data)
 # update_surplus_worksheet(surplus_data)
-# these were replaced with update_worksheet *2
+# these were replaced with update_worksheet
 # each call to that function includes two paramaters, as defined in the function
 # the first is for the data collected, the second is for the worksheet it is
 # writing to
+
+# assign values from get_last function to sales_columns variable
+# assign this variable to the calculate_stock_data function when called
 
 def main():
     data = get_sales_data()
@@ -250,8 +278,10 @@ def main():
     update_worksheet(sales_data, 'sales')
     new_surplus_data = calculate_surplus_data(sales_data)
     update_worksheet(new_surplus_data, 'surplus')
+    sales_columns = get_last_5_entries_sales()
+    stock_data = calculate_stock_data(sales_columns)
+    update_worksheet(stock_data, 'stock')
 
 
 print("Welcome to Love Sandwiches data automation.\n")
-# main()
-sales_columns = get_last_5_entries_sales()
+main()
