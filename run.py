@@ -92,6 +92,7 @@ def validate_data(values):
     try:
         # for each individual value in the values list, convert it into
         # an integer
+        # unpacks each individual value in the values list
         [int(value) for value in values]
 
         if len(values) != 6:
@@ -171,9 +172,20 @@ def calculate_surplus_data(sales_row):
 
     # standard list index won't work, as every time new data is added to the
     # stock worksheet, the row number we want will increase
-    # use a slice - square brackets - will slice te final
+    # use a slice - square brackets - will retrieve the most recent row of numbers
+    # ** this doesn't update it, just retrieves
     stock_row = stock[-1]
-    print(stock_row)
+    
+    # we need to iterate through two data, so use the zip method
+    # unpacks the stock_row list & assigns each individual piece to the stock variable
+    # unpacks the sales_row list & assigns each individual piece to the sales variable
+    # need a list to put these numbers - append surplus calculation to list within function
+    surplus_data = []
+    for stock, sales in zip(stock_row, sales_row):
+        surplus = int(stock) - sales
+        surplus_data.append(surplus)
+    print(surplus_data)
+
 
 
 
